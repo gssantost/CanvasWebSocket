@@ -1,56 +1,70 @@
 //Función de ayuda
 const $ = id => document.getElementById(id);
-
-document.addEventListener("DOMContentLoaded", e => {
-    console.log("Whiteboard is ready");
+console.log("Whiteboard is ready");
     let mouse = {
         click: false,
-        move: false,
-        pos: {x:0, y:0},
-        prev: {x:0, y:0}
+        move: false
     }
-    const canvas = $("whiteboard");
-    const ctx = canvas.getContext("2d");
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-    canvas.onmousedown = e => {
-        mouse.click = true;
-        mouse.prev = {x: e.pageX - canvas.offsetLeft, y: e.pageY - canvas.offsetTop};
+    let coords = {
+        prevX: 0, prevY:0,
+        x:0, y:0
+    }    
+const canvas = $("whiteboard");
+const ctx = canvas.getContext("2d");
+const width = window.innerWidth;
+const height = window.innerHeight;
+canvas.width = width;
+canvas.height = height;
+//Eventos del lienzo
+canvas.onmousedown = e => {
+    mouse.click = true;
+    coords.prevX = e.pageX - canvas.offsetLeft;
+    coords.prevY = e.pageY - canvas.offsetTop;
+}
+canvas.onmouseup = e => {
+    mouse.click = false;
+}
+canvas.onmousemove = e => {
+    mouse.move = true;
+    if (mouse.click) {
+        coords.x = e.pageX - canvas.offsetLeft;
+        coords.y = e.pageY - canvas.offsetTop;
+        ws.send(JSON.stringify(coords)); //envío objeto de coordenadas a través del WebSocket
     }
-    canvas.onmouseup = e => {
-        mouse.click = false;
-    }
-    canvas.onmousemove = e => {
-        mouse.move = true;
-        if (mouse.click) {
-            mouse.pos.x = e.pageX - canvas.offsetLeft;
-            mouse.pos.y = e.pageY - canvas.offsetTop;
-            draw(mouse.prev, mouse.pos); //LA ACCIÓN DE DIBUJAR MOMENTANÉAMENTE AQUÍ
-        }
-    }
-    const draw = (coords, coordsNew) => {
-        ctx.beginPath();
-        ctx.lineWidth = 2;
-        ctx.lineJoin = "round";
-        ctx.moveTo(coords.x, coords.y);
-        ctx.lineTo(coordsNew.x, coordsNew.y);
-        ctx.stroke();
-        coords.x = coordsNew.x;
-        coords.y = coordsNew.y;
-    }
-})
-
+}
+const draw = (line) => {
+    ctx.beginPath();
+    ctx.lineWidth = 2;
+    ctx.lineJoin = "round";
+    ctx.moveTo(line.prevX, line.prevY);
+    ctx.lineTo(line.x, line.y);
+    ctx.stroke();
+    coords.prevX = line.x;
+    coords.prevY = line.y;
+}
 //Conexión al WebSocket
 let ws;
 const connect = () => {
-    ws = new WebSocket("ws://" + location.host + "/CanvasWebSocket/board/" + $("username").value);
-    ws.onopen = e => console.log("Connected!");
-    ws.onmessage = e => console.log(JSON.parse(e.data));
+    ws = new WebSocket("ws://" + location.host + "/CanvasWebSocket/paint/" + $("username").value);
+
+    ws.onmessage = e => {
+        //console.log(JSON.parse(e.data));
+        let line = JSON.parse(e.data);
+        draw(line);
+        let users = JSON.parse(e.data).usrs;
+        for (let key in users) {
+            $("users").innerHTML += `${users[key]} is online...!<br>`;
+        }
+    }
+
+    ws.onopen = e => {
+        console.log("Connected!");
+    }
+    
     ws.onclose = e => {
         if (ws.readyState === WebSocket.OPEN) {
             console.log("Disconnected!");
+            console.log(JSON.parse(e.data));
             ws.close();
         }
     }
@@ -58,6 +72,6 @@ const connect = () => {
 const logout = () => {
     ws.close();
 }
-
+//Event Listeners
 $("connectBtn").addEventListener("click", connect);
 $("disconnectBtn").addEventListener("click", logout);
