@@ -14,11 +14,11 @@
     
   </head>
   <body>
-    <div class="container-fluid border" >
+    <div class="container border" >
         <nav class="navbar navbar-expand-sm bg-light">
         <div class="row titulo">
             <div class="col rounded" style="background-color:rgb(129, 57, 75)">
-                <h1>  <span class="glyphicon glyphicon-heart"> Pizarra Compartida</span></h1>
+                <h1>                Pizarra Compartida</h1>
             </div>
             </div>
              </nav>
@@ -26,8 +26,8 @@
             <div  class="titulo rounded">
                     <blockquote class="blockquote">
                             <p>Recomendamos altamente el uso de distintos colores por usuarios, de manera
-                                que puedan reconocerse los dibujos hechos por cada uno. </p>
-                            <footer class="blockquote-footer">G&F</footer>
+                                que puedan reconocerse los dibujos hechos por cada uno </p>
+                            <footer class="blockquote-footer">La gerencia</footer>
                             </blockquote>
             </div>
             
@@ -38,19 +38,17 @@
             <div class="row">
             <div class=" col ">   
                     <input class="jscolor" id="jscolor">
-                    <div id="users" ></div>
             </div>
             <div class="col">
             Type your username:<input type="text" name="username" id="username">
-                   
-            <button id="connectBtn" >Join! <span class="glyphicon glyphicon-check"></span></button>
-            <button id="disconnectBtn">Exit!</button>
-            <button id="clearBtn">Clear Board!</button>
- 
+             <div id="users" ></div> 
+            <button id="connectBtn" class="join" >Join!</button>
+            <button id="disconnectBtn"class="join">Exit!</button>
+            
             </div> 
             </div>
             <div class="canva">
-            <canvas id="whiteboard" class="canva"></canvas>
+            <canvas id="whiteboard"></canvas>
             </div>
             </div>
             <script src="app.js"></script>    

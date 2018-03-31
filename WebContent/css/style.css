@@ -1,0 +1,30 @@
+
+.paleta{
+    top: 16em;
+    right: 8.5em;
+}
+
+.titulo{
+	position: inherit;
+	left: 0.5em;
+	background-color:rgb(236, 208, 208);
+}
+
+.border{
+	background-color: rgb(240, 227, 227);
+	border: black 2px;
+	/*width: 800 px;
+	height: 650px;*/
+}
+
+.join{
+	position: inherit;
+    left: 21em;
+    top: -1.9em;
+}
+
+.canva{
+	height: 662px  !important;
+	width: 1350px  !important;
+	border: black 3px;
+}
