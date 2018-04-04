@@ -104,7 +104,7 @@ const clear = () =>{
 	const ctx = canvas.getContext("2d");
 	ctx.clearRect(0, 0, width, height);
 }
-// Event Listeners
+/// Event Listeners
 $("connectBtn").addEventListener("click", connect);
 $("disconnectBtn").addEventListener("click", logout);
 $("clearBtn").addEventListener("click", clear);

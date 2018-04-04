@@ -26,7 +26,7 @@ public class SharedPaint {
 	public void onOpen(Session session, @PathParam("username") String username) throws IOException {
 		clients.add(session);
 		users.put(session.getId(), username);
-		/*
+		/*////////
 		 * if (drawingHistory.length() > 0) { for (int i = 0; i <
 		 * drawingHistory.length(); i++) {
 		 * broadcast(drawingHistory.getJSONObject(i).toString()); } }
